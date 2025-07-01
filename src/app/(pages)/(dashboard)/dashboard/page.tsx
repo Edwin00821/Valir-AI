@@ -99,13 +99,12 @@ const metricsData = [
 
 export default async function DashboardPage(props: DashboardPageProps) {
   const searchParams = props.searchParams;
-  const search = searchParamsCache.parse(searchParams);
+
+  const search = await searchParamsCache.parse(searchParams);
 
   const predictions = await getPredictions(search);
 
   if (predictions == null) return notFound();
-
-  console.log(predictions);
 
   const selectedDistrict = "Todas";
 

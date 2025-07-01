@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import {
   parseAsBoolean,
   parseAsFloat,
@@ -26,8 +28,11 @@ import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 
 export const Filters = () => {
+  const router = useRouter();
+
   const [selectedDistrict, setSelectedDistrict] = useQueryState(
     "alcaldia",
     parseAsString.withDefault("Todas")
@@ -68,6 +73,17 @@ export const Filters = () => {
     parseAsBoolean.withDefault(false)
   );
 
+  const clearFilters = () => {
+    setSquareMeters(null);
+    setBedrooms(null);
+    setBathrooms(null);
+    setSquareMeters(null);
+    setCurrentIncome(null);
+    setCurrentValue(null);
+    setOccupancyRate(null);
+    setWorldEvent(null);
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="pb-3">
@@ -82,7 +98,7 @@ export const Filters = () => {
             <Label className="text-sm font-medium">Alcaldía</Label>
             <Select
               value={selectedDistrict}
-              onValueChange={setSelectedDistrict}
+              onValueChange={(v) => setSelectedDistrict(v)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar alcaldía" />
@@ -169,6 +185,17 @@ export const Filters = () => {
             />
             <Label className="text-sm font-medium">Evento Mundial</Label>
           </div>
+
+          <Button className="cursor-pointer" onClick={() => router.refresh()}>
+            Aplicar filtros
+          </Button>
+          <Button
+            className="cursor-pointer"
+            variant="outline"
+            onClick={() => clearFilters()}
+          >
+            Borrar filtros
+          </Button>
         </div>
       </CardContent>
     </Card>
